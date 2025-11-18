@@ -60,11 +60,6 @@ void loop() {
 	} else {
 		distance = (duration * 0.0343) / 2;
 	}
-
-	duration = pulseIn(echoPIN, HIGH); 
-	distance = (duration * SPEED_OF_SOUND_CM_PER_US) / 2;  
-
-
   	Serial.print("Distance: ");  
 	Serial.println(distance);  
 	delay(50);
