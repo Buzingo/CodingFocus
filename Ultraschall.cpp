@@ -17,9 +17,6 @@ const double SPEED_OF_SOUND_CM_PER_US = 0.0343; // Source: physics, 343 m/s = 0.
  *  - initializing serial/UART, SPI, I2C, or other communication interfaces
  *  - initializing sensors, actuators, and peripheral libraries
  *  - setting initial values for global variables or application state
- *
- * No parameters.
- *
  */
 void setup() {
 	pinMode(trigPIN, OUTPUT);  
