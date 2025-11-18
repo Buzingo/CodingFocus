@@ -38,12 +38,6 @@ void setup() {
  *    (0.0343 cm/µs approximates the speed of sound; divide by two for round trip).
  *  - Prints "Distance: " and the computed distance to the Serial monitor.
  *  - Waits 50 ms before repeating.
- *
- * Assumptions:
- *  - trigPIN and echoPIN are defined and configured in setup() (trigPIN as OUTPUT,
- *    echoPIN as INPUT).
- *  - duration and distance variables exist with appropriate types (e.g., unsigned long
- *    for duration, float for distance).
  */
 void loop() {
 
