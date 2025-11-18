@@ -1,6 +1,6 @@
 #include <Arduino.h>
-const int trigPIN = 9;
-const int echoPIN = 10;
+const int TRIGPIN = 9;
+const int ECHOPIN = 10;
 double duration, distance;
 
 // Speed of sound in cm/µs at 20°C, dry air (can be adjusted for temperature/humidity)
@@ -19,8 +19,8 @@ const double SPEED_OF_SOUND_CM_PER_US = 0.0343; // Source: physics, 343 m/s = 0.
  *  - setting initial values for global variables or application state
  */
 void setup() {
-	pinMode(trigPIN, OUTPUT);  
-	pinMode(echoPIN, INPUT);
+	pinMode(TRIGPIN, OUTPUT);  
+	pinMode(ECHOPIN, INPUT);
 	Serial.begin(9600);
 }
 
@@ -41,10 +41,10 @@ void setup() {
  */
 void loop() {
 
-  	digitalWrite(trigPIN, LOW);  
+  	digitalWrite(TRIGPIN, LOW);  
 	delayMicroseconds(2);  
-	digitalWrite(trigPIN, HIGH);  
-	duration = pulseIn(echoPIN, HIGH, 30000); // 30ms timeout
+	digitalWrite(TRIGPIN, HIGH);  
+	duration = pulseIn(ECHOPIN, HIGH, 30000); // 30ms timeout
 	if (duration == 0) {
 		Serial.println("Warning: No echo received (timeout)");
 		distance = -1; // Indicate invalid reading
