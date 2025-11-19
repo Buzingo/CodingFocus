@@ -1,4 +1,4 @@
-# UltraschallSensor
+# CodingFocus
 
 Overview
 - This folder contains two separate Arduino sketches with different purposes:
