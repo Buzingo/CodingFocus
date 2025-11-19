@@ -28,10 +28,10 @@ const double SPEED_OF_SOUND_CM_PER_US = 0.0343; // Source: physics, 343 m/s = 0.
 void setup() {
 	pinMode(TRIGPIN, OUTPUT);  
 	pinMode(ECHOPIN, INPUT);
-  pinMode(LED, OUTPUT);
-  lcd.init();
-  lcd.backlight();
-  lcd.setCursor(0,0);
+	pinMode(LED, OUTPUT);
+	lcd.init();
+	lcd.backlight();
+	lcd.setCursor(0,0);
 	Serial.begin(9600);
 }
 
@@ -52,7 +52,7 @@ void setup() {
  */
 void loop() {
 
-  digitalWrite(TRIGPIN, LOW);  
+ 	digitalWrite(TRIGPIN, LOW);  
 	delayMicroseconds(2);  
 	digitalWrite(TRIGPIN, HIGH);  
 	delayMicroseconds(10);
@@ -66,27 +66,27 @@ void loop() {
 	}
    
   
-  if (distance < 0) {
-  lcd.clear();
-  lcd.print("No echo");
-  digitalWrite(LED, LOW); 
-  return;
-  }
+	if (distance < 0) {
+	lcd.clear();
+	lcd.print("No echo");
+	digitalWrite(LED, LOW); 
+	return;
+	}
 
-  lcd.clear();
-  lcd.print(distance);
-  lcd.print("cm");
-	delay(50);
+	lcd.clear();
+	lcd.print(distance);
+	lcd.print("cm");
+		delay(50);
 
-  if(distance>=100){
-    digitalWrite(LED,LOW);
-  }else if(distance<100 && distance >= 10){
-    digitalWrite(LED, HIGH);
-    delay(distance*10);
-    digitalWrite(LED, LOW);
-  }else{
-    digitalWrite(LED, HIGH);
-  }
+	if(distance>=100){
+		digitalWrite(LED,LOW);
+	}else if(distance<100 && distance >= 10){
+		digitalWrite(LED, HIGH);
+		delay(distance*10);
+		digitalWrite(LED, LOW);
+	}else{
+		digitalWrite(LED, HIGH);
+	}
 
 
 
