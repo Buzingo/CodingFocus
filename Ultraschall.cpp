@@ -67,10 +67,10 @@ void loop() {
    
   
 	if (distance < 0) {
-	lcd.clear();
-	lcd.print("No echo");
-	digitalWrite(LED, LOW); 
-	return;
+		lcd.clear();
+		lcd.print("No echo");
+		digitalWrite(LED, LOW); 
+		return;
 	}
 
 	lcd.clear();
