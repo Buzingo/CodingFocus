@@ -14,17 +14,17 @@ void loop() {
   Serial.print("Init: ");
   Serial.println(value);
   if (value <= 511) {
-  int pwm = map(value, 0, 511, 255, 0);
-  analogWrite(MBLACK, 0);
-  analogWrite(MRED, pwm);
-  Serial.print("conv: ");
-  Serial.println(pwm);
+    int pwm = map(value, 0, 511, 255, 0);
+    analogWrite(MBLACK, 0);
+    analogWrite(MRED, pwm);
+    Serial.print("conv: ");
+    Serial.println(pwm);
 } else {
-  int pwm = map(value, 512, 1023, 0, 255);
-  analogWrite(MRED, 0);
-  analogWrite(MBLACK, pwm);
-  Serial.print("conv: ");
-  Serial.println(pwm);
+    int pwm = map(value, 512, 1023, 0, 255);
+    analogWrite(MRED, 0);
+    analogWrite(MBLACK, pwm);
+    Serial.print("conv: ");
+    Serial.println(pwm);
 }
 
   delay(10);
