@@ -1,68 +1,99 @@
 # CodingFocus
 
 Overview
-- This folder contains two separate Arduino sketches with different purposes:
-  - `Ultraschall.ino` — ultrasonic distance measurement using an HC-SR04-like sensor, an I2C 16x2 LCD (LiquidCrystal_I2C), and an indicator LED.
-  - `Bogosort.ino` — a Serial-only demonstration of bogosort (random shuffle sort). It runs in setup() and prints attempts to Serial. No special sensor or display required.
+- This folder contains several Arduino sketches for different demos and small projects:
+  - `Ultraschall.ino` — ultrasonic distance measurement using an HC‑SR04‑like sensor, an I2C 16x2 LCD, and an indicator LED.
+  - `Ultraschall_plus_Piezo.ino` — same as above, with an added piezo/buzzer for audible feedback.
+  - `Bogosort.ino` — Serial-only demonstration of bogosort (random shuffle sort). Runs in setup() and prints attempts to Serial.
+  - `PotiMotor.ino` — simple potentiometer-controlled motor (PWM) demo.
 
-Files
-- `Ultraschall.ino` — measures distance, shows result on I2C LCD, prints warnings to Serial, and drives an LED.
-- `Bogosort.ino` — generates a random array, repeatedly shuffles until sorted, and logs each attempt to Serial (for demonstration/education).
+Repository layout
+- Ultraschall.ino
+- Ultraschall_plus_Piezo.ino
+- Bogosort.ino
+- PotiMotor.ino
+- README.md (this file)
 
-Hardware & Components (Ultraschall.ino)
+Files (what they do)
+- Ultraschall.ino — measures distance, shows the numeric result on an I2C LCD, prints warnings to Serial (9600), and drives an LED based on distance thresholds.
+- Ultraschall_plus_Piezo.ino — same as Ultraschall.ino but also drives a piezo/buzzer (pin 4) for distance-dependent tones.
+- Bogosort.ino — generates a small random array, repeatedly shuffles it until sorted, and logs attempts to Serial (9600). Seeds PRNG via analogRead(A0).
+- PotiMotor.ino — reads a potentiometer (A0) and maps the value to two PWM outputs to drive a motor or demonstrate bi‑directional control.
+
+Hardware & Components (Ultraschall / Ultraschall_plus_Piezo)
 - Arduino Uno (or compatible)
-- Ultrasonic sensor HC-SR04 (or equivalent)
-- I2C 16x2 LCD with address 0x27 (LiquidCrystal_I2C)
+- Ultrasonic sensor HC‑SR04 (or equivalent)
+- I2C 16x2 LCD (LiquidCrystal_I2C). Common I2C addresses: 0x27 or 0x3F — run an I2C scanner if uncertain.
 - LED + resistor (connected to digital pin 2)
+- (Ultraschall_plus_Piezo) Piezo buzzer on digital pin 4
 - Wires / breadboard
 
-Pinout (Ultraschall.ino)
+Pinout (Ultraschall & Ultraschall_plus_Piezo)
 - TRIGPIN: D9
 - ECHOPIN: D10
 - LED: D2
+- BUZZER (Ultraschall_plus_Piezo): D4
 - I2C: SDA / SCL pins (A4/A5 on older Unos or dedicated SDA/SCL pins on newer boards)
 
+Hardware & Components (PotiMotor)
+- Potentiometer connected to A0
+- Two PWM output pins (MRED = D3, MBLACK = D5 in PotiMotor.ino)
+- Small motor / driver circuit (observe current limits)
+
 Bogosort.ino hardware
-- No special hardware required. It uses Serial for input/output.
-- Uses analog pin A0 to seed the PRNG (randomSeed(analogRead(A0))). For better randomness, leave A0 floating or connect a noisy analog source.
+- No special hardware required. It uses Serial for input/output and analog A0 for PRNG seed.
 
 Libraries
-- LiquidCrystal_I2C — required only for `Ultraschall.ino`. Install via Arduino Library Manager if needed.
+- LiquidCrystal_I2C — required for Ultraschall*.ino sketches. Install via Arduino Library Manager if needed.
 
 How Ultraschall.ino works (brief)
 - Sends a 10µs trigger pulse on TRIGPIN to initiate an ultrasonic ping.
 - Measures echo pulse width on ECHOPIN via pulseIn() (microseconds).
 - Computes distance (cm) as (duration * SPEED_OF_SOUND_CM_PER_US) / 2 (default SPEED_OF_SOUND_CM_PER_US = 0.0343).
-- Displays the numeric distance on the I2C LCD and prints warnings to Serial (9600 baud).
-- LED behavior:
-  - distance >= 100 cm: LED off
-  - 10 cm <= distance < 100 cm: LED blinks (ON time = distance * 10 ms)
-  - distance < 10 cm: LED stays ON
+- Displays distance on the I2C LCD and prints warnings to Serial (9600 baud).
+- LED and buzzer behavior:
+  - distance >= 100 cm: LED off, no tone
+  - 10 cm <= distance < 100 cm: LED blinks; buzzer (if present) emits distance-dependent tones
+  - distance < 10 cm: LED stays ON; buzzer may emit a continuous/high tone
   - No echo (timeout): LCD shows "No echo" and LED is turned off
 
 How Bogosort.ino works (brief)
-- Allocates a small array (LEN = 7) of random integers.
+- Allocates a small array (LEN = 7 by default) of random integers.
 - Uses bogosort: repeatedly shuffles the array until it is sorted, logging each attempt to Serial (9600 baud).
-- Runs in setup(); loop() is empty. Intended for educational/demonstration use only.
+- Seeds PRNG with analogRead(A0); for better randomness leave A0 floating or connect a noisy source.
+- Runs in setup(); loop() is empty.
 
-Usage — Ultraschall.ino
-1. Wire the ultrasonic sensor, I2C LCD, and LED per the Pinout section.
-2. Open `Ultraschall.ino` in Arduino IDE.
-3. Install LiquidCrystal_I2C library if not present.
+How PotiMotor.ino works (brief)
+- Reads analog value from A0.
+- Maps value to PWM duty cycle for two outputs to simulate bidirectional motor control.
+- Logs raw and converted PWM values to Serial (9600).
+
+Usage — Ultraschall / Ultraschall_plus_Piezo
+1. Open the relevant `.ino` file in the Arduino IDE.
+2. Install LiquidCrystal_I2C via Library Manager if needed.
+3. Run an I2C scanner if your LCD is blank to confirm the address (commonly 0x27 or 0x3F) and update the constructor in the sketch if required.
 4. Select board/port and upload.
-5. Open Serial Monitor at 9600 baud to see warnings and debug messages.
+5. Open Serial Monitor at 9600 baud for debug messages.
 
-Usage — Bogosort.ino
-1. Open `Bogosort.ino` in Arduino IDE.
-2. Select board/port and upload (no extra libraries required).
-3. Open Serial Monitor at 9600 baud to watch attempts and final sorted array.
+Usage — Bogosort
+1. Open `Bogosort.ino` in the Arduino IDE.
+2. Select board/port and upload (no additional libraries required).
+3. Open Serial Monitor at 9600 baud to watch shuffles and the final sorted array.
 
-Notes & Troubleshooting
-- If `Ultraschall.ino` prints "Warning: No echo received (timeout)", check sensor wiring, power (Vcc/GND), and that nothing is blocking the sensor.
-- pulseIn timeout is 30 ms in the sketch; objects farther than this timeout (~5 m) won't be detected.
-- SPEED_OF_SOUND_CM_PER_US assumes ~20°C dry air. For better accuracy, compute speed from local temperature:
-  c (m/s) ≈ 331.4 + 0.6 * T(°C) → convert to cm/µs by dividing by 1e4.
-- Bogosort is intentionally inefficient; for arrays of moderate size it can take an astronomically long time. Use small LEN (current is 7) only for demonstration.
+Usage — PotiMotor
+1. Open `PotiMotor.ino`.
+2. Connect potentiometer and motor/driver per sketch comments.
+3. Upload and use Serial Monitor (9600) to observe values.
+
+Troubleshooting
+- "Warning: No echo received (timeout)" — check sensor wiring, power (Vcc/GND), and that nothing is blocking the sensor.
+- If LCD shows nothing or gibberish, run an I2C scanner and confirm the address and wiring (SDA/SCL, VCC, GND, contrast).
+- pulseIn timeout is 30 ms by default; beyond that (~5 m) objects won't be detected.
+- Beware of bogosort: it's intentionally inefficient. Use small LEN only for demonstration.
+
+Notes
+- SPEED_OF_SOUND_CM_PER_US assumes ~20°C. For higher accuracy compute speed from local temperature: c (m/s) ≈ 331.4 + 0.6 * T(°C) → convert to cm/µs by dividing by 10,000.
+- Reuse and adapt sketches for learning; check pin assignments before wiring.
 
 License / Attribution
 - Example Arduino sketches for learning and experimentation. Reuse as needed.
