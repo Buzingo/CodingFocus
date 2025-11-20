@@ -26,7 +26,6 @@ int buttonState = HIGH;
 unsigned long lastDebounceTime = 0;
 const unsigned long debounceDelay = 50; // ms
 
-// New: compact segment handling
 const byte SEG_PINS[7] = {
   LED_SEG_A_PIN, // bit0
   LED_SEG_B_PIN, // bit1
@@ -172,7 +171,7 @@ void loop()
           // Summe berechnen und prüfen
           unsigned int s = (unsigned int)dig1 + (unsigned int)dig2;
           if (s > 15u) {
-            // Fehler: Ergebnis zu groß -> blinke alle Segmente kurz und reset
+            // Fehler: Ergebnis zu groß -> Segmente kurz und reset
             Serial.print("Fehler: Summe zu groß: ");
             Serial.println(s);
             blinkAllSegments(6, 200);
