@@ -6,12 +6,14 @@ Overview
   - `Ultraschall_plus_Piezo.ino` — same as above, with an added piezo/buzzer for audible feedback.
   - `Bogosort.ino` — Serial-only demonstration of bogosort (random shuffle sort). Runs in setup() and prints attempts to Serial.
   - `PotiMotor.ino` — simple potentiometer-controlled motor (PWM) demo.
+  - `7SegmentRechner.ino` — two-digit 7-segment demo: select two hex digits via a potentiometer and button, shows sum (0–F) and error blink for overflow.
 
 Repository layout
 - Ultraschall.ino
 - Ultraschall_plus_Piezo.ino
 - Bogosort.ino
 - PotiMotor.ino
+- 7SegmentRechner.ino
 - README.md (this file)
 
 Files (what they do)
@@ -19,6 +21,7 @@ Files (what they do)
 - Ultraschall_plus_Piezo.ino — same as Ultraschall.ino but also drives a piezo/buzzer (pin 4) for distance-dependent tones.
 - Bogosort.ino — generates a small random array, repeatedly shuffles it until sorted, and logs attempts to Serial (9600). Seeds PRNG via analogRead(A0).
 - PotiMotor.ino — reads a potentiometer (A0) and maps the value to two PWM outputs to drive a motor or demonstrate bi‑directional control.
+- 7SegmentRechner.ino — lets you pick two 0–9 hex digits using a potentiometer and a single button (debounced). Pressing the button stores the first digit, pressing again stores the second digit and computes the sum. Displays the live selection or the result on a 7‑segment (segments driven directly). If the sum exceeds 15 (0xF) the sketch blinks all segments as an error and resets. Also prints simple debug messages to Serial (9600).
 
 Hardware & Components (Ultraschall / Ultraschall_plus_Piezo)
 - Arduino Uno (or compatible)
@@ -39,6 +42,13 @@ Hardware & Components (PotiMotor)
 - Potentiometer connected to A0
 - Two PWM output pins (MRED = D3, MBLACK = D5 in PotiMotor.ino)
 - Small motor / driver circuit (observe current limits)
+
+Hardware & Components (7SegmentRechner)
+- Arduino Uno (or compatible)
+- Two-digit 7‑segment display or single-digit display wired to segment pins (common-cathode assumed in sketch)
+- Potentiometer on A0 for digit selection
+- Pushbutton on digital pin 12 (INPUT_PULLUP)
+- Wires / breadboard / current-limiting resistors for segments as required
 
 Bogosort.ino hardware
 - No special hardware required. It uses Serial for input/output and analog A0 for PRNG seed.
@@ -68,6 +78,12 @@ How PotiMotor.ino works (brief)
 - Maps value to PWM duty cycle for two outputs to simulate bidirectional motor control.
 - Logs raw and converted PWM values to Serial (9600).
 
+How 7SegmentRechner.ino works (brief)
+- Reads potentiometer (A0) and maps to 0–9 for live selection.
+- Uses a debounced button (INPUT_PULLUP) to capture: first press selects first digit, second press selects second digit and triggers sum calculation.
+- If sum <= 15 the result is shown (supports 0–F); if sum > 15 the sketch blinks all segments as an error and resets to the initial state.
+- Serial debug messages are printed at 9600 baud.
+
 Usage — Ultraschall / Ultraschall_plus_Piezo
 1. Open the relevant `.ino` file in the Arduino IDE.
 2. Install LiquidCrystal_I2C via Library Manager if needed.
@@ -84,6 +100,12 @@ Usage — PotiMotor
 1. Open `PotiMotor.ino`.
 2. Connect potentiometer and motor/driver per sketch comments.
 3. Upload and use Serial Monitor (9600) to observe values.
+
+Usage — 7SegmentRechner
+1. Open `7SegmentRechner.ino` in the Arduino IDE.
+2. Wire the segments and button as described in the sketch comments (check pin defines).
+3. Upload, open Serial Monitor at 9600 baud to view debug output.
+4. Use the potentiometer to choose digits; press the button to store first and second digits and to reset.
 
 Troubleshooting
 - "Warning: No echo received (timeout)" — check sensor wiring, power (Vcc/GND), and that nothing is blocking the sensor.
