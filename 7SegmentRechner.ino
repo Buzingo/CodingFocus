@@ -201,17 +201,17 @@ void loop()
   } else if (state == PICK_SECOND) {
     displayDigit(potVal); // live zweite Auswahl anzeigen
   } else if (state == SHOW_RESULT) {
-    displayDigit(sumResult); // Ergebnis 0-F anzeigen (displayDigit unterstützt 0-15)
+    displayDigit(sumResult); // Ergebnis 0-F anzeigen 
   }
 
-  delay(50); // kurze Schleifenpause
+  delay(50); 
 }
 
 void displayDigit(byte digit)
 {
   turnOffDisplay();
 
-  // Nur 0x0–0xF (0–15) zulassen
+  // Nur 0x0–0xF zulassen
   if (digit > 15) {
     return;
   }
