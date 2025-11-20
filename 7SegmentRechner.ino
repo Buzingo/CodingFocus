@@ -36,9 +36,9 @@ const byte SEG_PINS[7] = {
   LED_SEG_G_PIN  // bit6
 };
 
-// 7-seg bitmasks for 0..15 using bit0=A .. bit6=G
+
 const uint8_t DIGIT_MASK[16] = {
-  0x3F, // 0 -> 0b0111111
+  0x3F, // 0 
   0x06, // 1
   0x5B, // 2
   0x4F, // 3
@@ -66,7 +66,7 @@ void setup()
   Serial.begin(9600);
 }
 
-// Helper: turn off all segments and dot
+// turn off all segments and dot
 void turnOffDisplay()
 {
   for (byte i = 0; i < 7; ++i) {
@@ -75,7 +75,7 @@ void turnOffDisplay()
   digitalWrite(LED_SEG_DOT_PIN, LOW);
 }
 
-// Helper: set segments according to 7-bit mask (bit0=A ... bit6=G)
+//set segments according to 7-bit mask
 void setSegmentsFromMask(uint8_t mask)
 {
   for (byte i = 0; i < 7; ++i) {
@@ -83,7 +83,7 @@ void setSegmentsFromMask(uint8_t mask)
   }
 }
 
-// Helper: blink all segments and dot (used for error)
+//  blink all segments and dot (used for error)
 void blinkAllSegments(byte times, unsigned long msDelay)
 {
   for (byte i = 0; i < times; ++i) {
@@ -96,7 +96,7 @@ void blinkAllSegments(byte times, unsigned long msDelay)
   }
 }
 
-// Helper: blink dot n times (used for confirmation)
+// blink dot n times (used for confirmation)
 void blinkDot(byte times, unsigned long msDelay)
 {
   for (byte i = 0; i < times; ++i) {
